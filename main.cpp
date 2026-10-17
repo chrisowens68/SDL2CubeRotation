@@ -1,5 +1,7 @@
 #include "Screen.h"
 
+//this is a test comment
+
 int main(int argc, char** argv) {
     Uint32 frameStart;
     float frameTime;
