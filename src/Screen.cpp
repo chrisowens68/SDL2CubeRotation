@@ -1,6 +1,5 @@
 #include "Screen.h"
-#include "math.h"
-#include "string.h"
+#include <cmath>
 
 Screen::Screen() {
 
@@ -43,15 +42,16 @@ bool Screen::init()
 void Screen::handleEvents()
 {
 	SDL_Event event;
-	SDL_PollEvent(&event);
-
-	switch (event.type) 
+	while (SDL_PollEvent(&event))
 	{
-	case SDL_QUIT:
-		isRunning = false;
-		break;
-	default:
-		break;
+		switch (event.type)
+		{
+		case SDL_QUIT:
+			isRunning = false;
+			break;
+		default:
+			break;
+		}
 	}
 
 }
@@ -212,9 +212,9 @@ void Screen::line(float x1, float y1, float x2, float y2)
 	float dx = x2 - x1;
 	float dy = y2 - y1;
 
-	float length = std::sqrtf(dx * dx + dy * dy);
+	float length = std::sqrt(dx * dx + dy * dy);
 
-	float theta = std::atan2f(dy, dx);
+	float theta = std::atan2(dy, dx);
 
 	for (float i = 0; i < length; i++)
 	{
@@ -226,8 +226,8 @@ void Screen::line(float x1, float y1, float x2, float y2)
 
 void Screen::Bresline(float x1, float y1, float x2, float y2) 
 {
-	int dx = abs(x2 - x1), sx = x1 < x2 ? 1 : -1;
-	int dy = -abs(y2 - y1), sy = y1 < y2 ? 1 : -1;
+	int dx = std::abs(x2 - x1), sx = x1 < x2 ? 1 : -1;
+	int dy = -std::abs(y2 - y1), sy = y1 < y2 ? 1 : -1;
 	int err = dx + dy, e2;
 
 	while (true) 
@@ -280,18 +280,18 @@ void Screen::rotateAll(Vec3& point, float x, float y, float z)
 
 	//Confirmed with Wikipedia version
 	rad = x;
-	point.y = std::cosf(rad) * OriginalPoint.y - std::sinf(rad) * OriginalPoint.z;
-	point.z = std::sinf(rad) * OriginalPoint.y + std::cosf(rad) * OriginalPoint.z;
+	point.y = std::cos(rad) * OriginalPoint.y - std::sin(rad) * OriginalPoint.z;
+	point.z = std::sin(rad) * OriginalPoint.y + std::cos(rad) * OriginalPoint.z;
 	OriginalPoint = point;
 
 	rad = y;
-	point.x = std::cosf(rad) * OriginalPoint.x - std::sinf(rad) * OriginalPoint.z;
-	point.z = std::sinf(rad) * OriginalPoint.x + std::cosf(rad) * OriginalPoint.z;
+	point.x = std::cos(rad) * OriginalPoint.x - std::sin(rad) * OriginalPoint.z;
+	point.z = std::sin(rad) * OriginalPoint.x + std::cos(rad) * OriginalPoint.z;
 	OriginalPoint = point;
 
 	rad = z;
-	point.x = std::cosf(rad) * OriginalPoint.x + std::sinf(rad) * OriginalPoint.y;
-	point.y = -std::sinf(rad) * OriginalPoint.x + std::cosf(rad) * OriginalPoint.y;
+	point.x = std::cos(rad) * OriginalPoint.x + std::sin(rad) * OriginalPoint.y;
+	point.y = -std::sin(rad) * OriginalPoint.x + std::cos(rad) * OriginalPoint.y;
 	OriginalPoint = point;
 
 }
@@ -301,16 +301,16 @@ void Screen::rotateX(Vec3& point, float x, float y, float z)
 	float rad = 0.0f;
 
 	rad = x;
-	point.y = std::cosf(rad) * point.y - std::sinf(rad) * point.z;
-	point.z = std::sinf(rad) * point.y + std::cosf(rad) * point.z;
+	point.y = std::cos(rad) * point.y - std::sin(rad) * point.z;
+	point.z = std::sin(rad) * point.y + std::cos(rad) * point.z;
 
 	//rad = y;
-	//point.x = std::cosf(rad) * point.x - std::sinf(rad) * point.z;
-	//point.z = std::sinf(rad) * point.x + std::cosf(rad) * point.z;
+	//point.x = std::cos(rad) * point.x - std::sin(rad) * point.z;
+	//point.z = std::sin(rad) * point.x + std::cos(rad) * point.z;
 
 	//rad = z;
-	//point.x = std::cosf(rad) * point.x + std::sinf(rad) * point.y;
-	//point.y = -std::sinf(rad) * point.x + std::cosf(rad) * point.y;
+	//point.x = std::cos(rad) * point.x + std::sin(rad) * point.y;
+	//point.y = -std::sin(rad) * point.x + std::cos(rad) * point.y;
 
 }
 
@@ -319,16 +319,16 @@ void Screen::rotateY(Vec3& point, float x, float y, float z)
 	float rad = 0.0f;
 
 	//rad = x;
-	//point.y = std::cosf(rad) * point.y - std::sinf(rad) * point.z;
-	//point.z = std::sinf(rad) * point.y + std::cosf(rad) * point.z;
+	//point.y = std::cos(rad) * point.y - std::sin(rad) * point.z;
+	//point.z = std::sin(rad) * point.y + std::cos(rad) * point.z;
 
 	rad = y;
-	point.x = std::cosf(rad) * point.x - std::sinf(rad) * point.z;
-	point.z = std::sinf(rad) * point.x + std::cosf(rad) * point.z;
+	point.x = std::cos(rad) * point.x - std::sin(rad) * point.z;
+	point.z = std::sin(rad) * point.x + std::cos(rad) * point.z;
 
 	//rad = z;
-	//point.x = std::cosf(rad) * point.x + std::sinf(rad) * point.y;
-	//point.y = -std::sinf(rad) * point.x + std::cosf(rad) * point.y;
+	//point.x = std::cos(rad) * point.x + std::sin(rad) * point.y;
+	//point.y = -std::sin(rad) * point.x + std::cos(rad) * point.y;
 
 }
 
@@ -337,17 +337,22 @@ void Screen::rotateZ(Vec3& point, float x, float y, float z)
 	float rad = 0.0f;
 
 	//rad = x;
-	//point.y = std::cosf(rad) * point.y - std::sinf(rad) * point.z;
-	//point.z = std::sinf(rad) * point.y + std::cosf(rad) * point.z;
+	//point.y = std::cos(rad) * point.y - std::sin(rad) * point.z;
+	//point.z = std::sin(rad) * point.y + std::cos(rad) * point.z;
 
 	//rad = y;
-	//point.x = std::cosf(rad) * point.x - std::sinf(rad) * point.z;
-	//point.z = std::sinf(rad) * point.x + std::cosf(rad) * point.z;
+	//point.x = std::cos(rad) * point.x - std::sin(rad) * point.z;
+	//point.z = std::sin(rad) * point.x + std::cos(rad) * point.z;
 
 	rad = z;
-	point.x = std::cosf(rad) * point.x + std::sinf(rad) * point.y;
-	point.y = -std::sinf(rad) * point.x + std::cosf(rad) * point.y;
+	point.x = std::cos(rad) * point.x + std::sin(rad) * point.y;
+	point.y = -std::sin(rad) * point.x + std::cos(rad) * point.y;
 
 }
 
 
+
+void Screen::setTitle(const std::string& title)
+{
+	SDL_SetWindowTitle(window, title.c_str());
+}

@@ -1,10 +1,9 @@
 #pragma once
 
-#include "SDL.h"
-#include "SDL_image.h"
-#include <SDL_ttf.h>
+#include <SDL2/SDL.h>
 #include <iostream>
 #include <vector>
+#include <string>
 
 // constants
 
@@ -56,6 +55,7 @@ public:
 	void render();
 	void clearPoints();
 	Uint32 getFrameCount();
+	void setTitle(const std::string& title);
 
 	
 
@@ -71,7 +71,6 @@ private:
 	std::vector<connection> connections;
 	Vec3 centroid {0.0f, 0.0f, 0.0f};
 
-	float fps = 0.0f;
 	Uint32 frameCount = 0;
 
 };

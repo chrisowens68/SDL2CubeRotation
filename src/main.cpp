@@ -9,8 +9,9 @@ int main(int argc, char** argv) {
     Screen* screen = new Screen();
     if (screen->init() == false) return 1;
 
+    frameStart = SDL_GetTicks();
+
     while (screen->running()) {
-        frameStart = SDL_GetTicks();
 
         
         screen->handleEvents();
@@ -33,7 +34,9 @@ int main(int argc, char** argv) {
 
             frameTime = SDL_GetTicks() - frameStart;
 
-            std::cout << "FPS " << frameTime/100*1000 << std::endl;
+            float fps = 100 * 1000.0f / frameTime;
+            std::cout << "FPS " << fps << std::endl;
+            screen->setTitle("FPS " + std::to_string(static_cast<int>(fps + 0.5f)));
             //std::cout << "Framecount " << screen->getFrameCount() << std::endl;
 
             frameStart = SDL_GetTicks();
